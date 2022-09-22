@@ -1,59 +1,55 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 
-function GalleryItem(props) {
+function GalleryItem(props){
     let [view, setView] = useState(false)
-
+    //set style
     const simpleStyle = {
-        'width': '33%',
+        'width': '25vw',
+        'height': 'auto',
+        'min-height':'200px',
+        'border': '1px solid black',
+        'margin': '2px',
+        'vertical-align':'top'
+    }
+    
+    const detailStyle = {
+        'width': '25vw',
         'height': 'auto',
         'border': '1px solid black',
         'margin': '2px'
     }
-    
-    const detailStyle = {
-        'width': '80vw',
-        'height': '20vh',
-        'border': '1px solid black',
-        'margin': '2px',
-        //'backgroundImage': `url(${props.item.artworkUrl100})`,
-        'backgroundRepeat': 'no-repeat',
-        'backgroundSize': 'cover',
-        'color': 'black'
-    }
 
     const simpleView = () => {
         return (
-            <div style={simpleStyle}>
-                <img src={props.item.artworkUrl100} />
-                <h3>{props.item.trackName}</h3>
+            <div id="simpleview" style={simpleStyle}>
+                <h2>{props.item.trackName}</h2>
                 <h4>{props.item.collectionName}</h4>
-                <a href={props.item.artistViewUrl} target="_blank">
-                    <button>iTunes Artist page</button>
-                </a>
+                <h4><a href={props.item.artistViewUrl}>{props.item.artistName}</a></h4>
+                <p>
+                    <button>View Details</button>
+                </p>
             </div>
         )
     }
 
     const detailView = () => {
         return (
-            <div style={detailStyle}>
+            <div id="detailview" style={detailStyle}>
                 <h2>{props.item.trackName}</h2>
-                <h3>{props.item.collectionName}</h3>
+                <h3><Link to={`/artist/${props.item.artistId}`}>{props.item.artistName}</Link></h3>
+                <p><Link to={`/album/${props.item.collectionId}`}>{props.item.collectionName}</Link></p>
                 <h4>{props.item.primaryGenreName}</h4>
                 <h4>{props.item.releaseDate}</h4>
+                
             </div>
         )
     }
-
     return (
-        <div onClick={() => setView(!view)}
-            style={{'display': 'inline-block'}}>
-        
-            {/* This simple ternary shows the simple view when 'view' is false! */}
+        <div onClick={() => setView(!view)} style={{'display': 'inline-block'}}>
             {view ? detailView() : simpleView()}
-
         </div>
     )
-
 }
+
 export default GalleryItem
